@@ -82,7 +82,9 @@ Talisman(
     strict_transport_security_include_subdomains=True,
     session_cookie_secure=IS_PROD,
     frame_options="DENY",
-    referrer_policy="no-referrer",
+    # same-origin: envia Referer nas requisições do próprio site (necessário para
+    # a verificação estrita de CSRF do Flask-WTF sob HTTPS) e o omite cross-site.
+    referrer_policy="same-origin",
     content_security_policy={
         "default-src": "'self'",
         "style-src": "'self'",
