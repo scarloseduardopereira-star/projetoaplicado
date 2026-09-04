@@ -152,31 +152,60 @@ Login de exemplo: usuário `admin` + a senha definida no passo 3.
 
 ## 4. Infraestrutura — Eixo 1 (Oracle Cloud Free Tier)
 
-> _Seção em construção — preenchida na fase de deploy._
+- **Provedor:** Oracle Cloud Infrastructure, Free Tier (região sa-saopaulo-1).
+- **Instância:** shape `VM.Standard.E2.1.Micro` (Always Free), 1 OCPU / 1 GB.
+- **Sistema operacional:** **Ubuntu Server 26.04 LTS** (OpenSSL 3.5.5).
+- **IP público:** `163.176.123.133` (reserved public IP).
+- **Servidor web:** **Nginx 1.28** como proxy reverso → Gunicorn (127.0.0.1:8000).
+- **Aplicação em produção:** https://163.176.123.133
 
-Plano:
-- VM **Ubuntu Server LTS** na Oracle Cloud (Free Tier), IP público.
-- Acesso remoto **só por chave SSH** (autenticação por senha desabilitada).
-- **Fail2Ban** na porta 22 (tolerância de 4 erros → banimento de 24h).
-- **Firewall / Security List** com least privilege (expor apenas 80/443).
-- **Nginx** como servidor web, proxy reverso para o Gunicorn.
-- **HTTPS via Certbot 5.4+** com certificado Let's Encrypt para o IP público,
-  autorrenovação ativada, e redirecionamento automático HTTP → HTTPS.
-- Meta: **SSL Labs nota A** + **PQC (Post-Quantum Cryptography) ativado**.
+### Endurecimento e metas de segurança
 
-_A preencher: IP público, prints da console Oracle, saída do SSL Labs._
+| Meta obrigatória | Implementação | Evidência |
+|---|---|---|
+| Acesso remoto só por chave SSH | `PasswordAuthentication no`, chave ed25519 | `sshd -T` |
+| Fail2Ban na porta 22 | jail `sshd`, `maxretry=4`, `bantime=86400` (24h) | `fail2ban-client status sshd` |
+| Firewall least privilege | Apenas 22, 80, 443 (iptables + Security List OCI) | `iptables -L INPUT` |
+| HTTPS (Certbot ≥ 5.4) | Certbot **5.8**, cert Let's Encrypt para IP, perfil short-lived, autorrenovação | `/etc/letsencrypt/live/163.176.123.133/` |
+| Redirect HTTP → HTTPS | Nginx `return 301 https://...` | `curl -I http://163.176.123.133` → 301 |
+| TLS forte (nota A) | TLS 1.2/1.3 apenas, ciphers AEAD, HSTS 1 ano | Qualys SSL Labs |
+| **PQC ativado** | `ssl_ecdh_curve X25519MLKEM768:...` (OpenSSL 3.5) | `Negotiated TLS1.3 group: X25519MLKEM768` |
+
+> O certificado é do tipo **short-lived (6 dias)** — modalidade usada pela Let's
+> Encrypt para certificados de endereço IP. A renovação automática já está
+> agendada pelo Certbot.
 
 ---
 
 ## 5. CI/CD — GitHub Actions
 
-> _Seção em construção — preenchida na fase de automação._
+Deploy contínuo: a cada `git push origin main`, o workflow
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) publica em produção.
 
-Plano:
-- Workflow `.github/workflows/deploy.yml` disparado em `push` na branch `main`.
-- Conexão SSH com a VM usando chave privada guardada em **GitHub Secrets**
-  (nenhuma credencial no `.yml`).
-- Passos: instalar dependências, reiniciar o serviço Gunicorn, recarregar Nginx.
+**Fluxo:** desenvolvimento local → `git push` → GitHub Actions → SSH na VM Oracle →
+atualização do código e restart do serviço.
+
+**Passos do workflow:**
+1. Reconstrói a chave SSH a partir do Secret (armazenada em **base64** para
+   preservar as quebras de linha) e grava com permissão `600`.
+2. Conecta via SSH e executa no servidor:
+   `git reset --hard origin/main` → `pip install -r requirements.txt` →
+   `systemctl restart tccapp` → checagem de `healthz`.
+
+**Gestão segura de credenciais (GitHub Secrets):**
+
+| Secret | Conteúdo |
+|---|---|
+| `SSH_PRIVATE_KEY_B64` | Chave privada SSH da VM, em base64 |
+| `SSH_HOST` | IP público da VM |
+| `SSH_USER` | Usuário de deploy (`ubuntu`) |
+
+Nenhuma credencial aparece no arquivo `.yml` — tudo vem dos Secrets em tempo de execução.
+
+### Credenciais de acesso à aplicação (demo)
+
+Usuário `admin`. A senha e o `SECRET_KEY` são gerados **no próprio servidor**
+(arquivo `.env`, fora do Git) — nada de segredos versionados.
 
 ---
 
