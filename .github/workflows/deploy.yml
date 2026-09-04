@@ -14,20 +14,25 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Configurar chave SSH (base64 -> arquivo)
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | base64 -d > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script_stop: true
-          script: |
-            sudo git -C /opt/app fetch --all -q
-            sudo git -C /opt/app reset --hard origin/main
-            sudo /opt/app/.venv/bin/pip install -q -r /opt/app/requirements.txt
-            sudo chown -R appuser:appuser /opt/app
-            sudo chmod 600 /opt/app/.env
-            sudo systemctl restart tccapp
-            sleep 2
-            systemctl is-active tccapp
-            curl -sk -o /dev/null -w 'deploy healthz=%{http_code}\n' https://127.0.0.1/healthz
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" bash -s <<'DEPLOY'
+          set -e
+          sudo git -C /opt/app fetch --all -q
+          sudo git -C /opt/app reset --hard origin/main
+          sudo /opt/app/.venv/bin/pip install -q -r /opt/app/requirements.txt
+          sudo chown -R appuser:appuser /opt/app
+          sudo chmod 600 /opt/app/.env
+          sudo systemctl restart tccapp
+          sleep 2
+          systemctl is-active tccapp
+          curl -sk -o /dev/null -w 'deploy healthz=%{http_code}\n' https://127.0.0.1/healthz
+          DEPLOY
