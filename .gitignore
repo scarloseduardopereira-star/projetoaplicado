@@ -1,0 +1,30 @@
+# Segredos e credenciais — NUNCA versionar
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+*.ppk
+
+# Ambiente Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Bancos locais
+*.sqlite
+*.sqlite3
+*.db
+
+# SO / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

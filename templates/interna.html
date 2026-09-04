@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Área Interna</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="card">
+    <h1>Área Interna</h1>
+
+    {% with msgs = get_flashed_messages() %}
+      {% if msgs %}<p class="msg">{{ msgs[0] }}</p>{% endif %}
+    {% endwith %}
+
+    <p>Autenticado como <strong>{{ user }}</strong>.</p>
+    <p>Esta página só é acessível após login. Requisições não autenticadas
+       são redirecionadas para a tela de entrada.</p>
+
+    <form method="post" action="{{ url_for('logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit">Sair</button>
+    </form>
+  </main>
+</body>
+</html>
