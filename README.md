@@ -168,12 +168,20 @@ Login de exemplo: usuário `admin` + a senha definida no passo 3.
 | Firewall least privilege | Apenas 22, 80, 443 (iptables + Security List OCI) | `iptables -L INPUT` |
 | HTTPS (Certbot ≥ 5.4) | Certbot **5.8**, cert Let's Encrypt para IP, perfil short-lived, autorrenovação | `/etc/letsencrypt/live/163.176.123.133/` |
 | Redirect HTTP → HTTPS | Nginx `return 301 https://...` | `curl -I http://163.176.123.133` → 301 |
-| TLS forte (nota A) | TLS 1.2/1.3 apenas, ciphers AEAD, HSTS 1 ano | Qualys SSL Labs |
-| **PQC ativado** | `ssl_ecdh_curve X25519MLKEM768:...` (OpenSSL 3.5) | `Negotiated TLS1.3 group: X25519MLKEM768` |
+| TLS forte (nota A) | TLS 1.2/1.3 apenas, ciphers AEAD, HSTS 1 ano | **Qualys SSL Labs: A+** |
+| **PQC ativado** | `ssl_ecdh_curve X25519MLKEM768:...` (OpenSSL 3.5) | SSL Labs: *supports PQC* — `X25519MLKEM768` |
 
-> O certificado é do tipo **short-lived (6 dias)** — modalidade usada pela Let's
-> Encrypt para certificados de endereço IP. A renovação automática já está
-> agendada pelo Certbot.
+> **Certificados:** o app responde por IP e por hostname.
+> - `163.176.123.133` — cert Let's Encrypt **short-lived (6 dias)**, modalidade
+>   usada para certificados de endereço IP.
+> - `163-176-123-133.sslip.io` — cert Let's Encrypt padrão (90 dias). O
+>   [teste gratuito do SSL Labs não avalia IPs](https://www.ssllabs.com/ssltest/)
+>   (indica o CertView pago), então a avaliação é feita por este hostname
+>   (sslip.io resolve para o mesmo IP; nenhum domínio foi registrado). Ambos
+>   compartilham a mesma configuração TLS. Renovação automática via Certbot.
+>
+> **Resultado SSL Labs (hostname): nota A+ com suporte a PQC key exchange
+> (`X25519MLKEM768`).**
 
 ---
 
