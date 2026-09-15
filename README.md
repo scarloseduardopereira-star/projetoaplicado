@@ -15,6 +15,65 @@ Protótipo de aplicação web desenvolvido sob os princípios **Secure by Design
 > assistente de IA (fluxo equivalente ao proposto pela IDE Antigravity),
 > incluindo geração de código seguro, depuração e refatoração.
 
+### 🎥 Vídeo de apresentação
+
+📺 **[Assista à apresentação no YouTube](COLE_AQUI_O_LINK_DO_YOUTUBE)** — explicação do
+objetivo, funcionamento e protocolos de segurança aplicados.
+
+### 🔗 Aplicação no ar
+
+| Recurso | Endereço |
+|---|---|
+| Aplicação (IP público) | https://163.176.123.133 |
+| Aplicação (hostname p/ teste TLS) | https://163-176-123-133.sslip.io |
+| Repositório | https://github.com/scarloseduardopereira-star/projetoaplicado |
+
+---
+
+## 0. Sobre o projeto (conceito)
+
+### Do que se trata
+
+Este projeto simula o **ciclo de vida completo** de uma aplicação web moderna em um
+cenário de mercado real: escrever o código, versioná-lo, publicá-lo em nuvem pública
+e mantê-lo em produção — **com segurança em cada etapa**, e não como um remendo no fim.
+
+A ideia central é demonstrar dois princípios:
+
+- **Secure by Design** — a segurança faz parte da arquitetura desde o primeiro
+  commit (controle de acesso, hash de senha, proteção CSRF, cabeçalhos de segurança).
+- **Secure by Default** — a configuração padrão já é a mais segura possível: o app
+  se recusa a iniciar sem segredos definidos, o cookie de sessão já nasce protegido,
+  o servidor só aceita TLS moderno e só abre as portas estritamente necessárias.
+
+### Como funciona (em uma frase)
+
+O usuário acessa a aplicação por HTTPS; faz **login** (senha verificada por hash
+Argon2, com proteção contra força bruta e CSRF); é levado a uma **página interna**
+que só existe para quem está autenticado; e pode sair pelo **logout**, que encerra a
+sessão. Por trás, o Nginx faz a criptografia TLS (com troca de chave pós-quântica) e
+repassa as requisições ao aplicativo Python rodando sob o Gunicorn.
+
+### Linguagem e por que foi escolhida
+
+- **Linguagem:** **Python 3** &nbsp;·&nbsp; **Framework:** **Flask**.
+- **Motivo:** o Flask entrega os controles de segurança exigidos com pouquíssimo
+  código e uma superfície de ataque pequena — CSRF, sessão, cabeçalhos/HSTS, hash
+  forte e rate limiting saem de bibliotecas maduras e bem auditadas, o que torna a
+  mitigação das categorias OWASP direta e fácil de comprovar. Não exige banco de
+  dados (requisito dispensado), mantendo o protótipo enxuto.
+
+### Configuração em alto nível
+
+1. **Infra (nuvem):** VM Ubuntu 26.04 na Oracle Cloud, endurecida (SSH só por chave,
+   Fail2Ban, firewall mínimo), com Nginx + Certbot (HTTPS/PQC).
+2. **Código:** app Flask servido pelo Gunicorn; segredos em variáveis de ambiente
+   (arquivo `.env`, nunca versionado).
+3. **Automação:** GitHub Actions publica em produção a cada `git push origin main`,
+   usando uma chave SSH guardada em GitHub Secrets.
+
+> As seções seguintes detalham cada eixo, com evidências e apontamentos no código.
+
 ---
 
 ## 1. Visão geral da aplicação
