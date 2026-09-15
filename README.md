@@ -23,22 +23,37 @@ Protótipo de aplicação web desenvolvido sob os princípios **Secure by Design
 | Aplicação (hostname p/ teste TLS) | https://163-176-123-133.sslip.io |
 | Repositório | https://github.com/scarloseduardopereira-star/projetoaplicado |
 
-### 🏆 Evidência — Qualys SSL Labs: **A+** com PQC
+### 🏆 Evidências de TLS/PQC
 
-Relatório ao vivo (verificável pelo avaliador):
-**https://www.ssllabs.com/ssltest/analyze.html?d=163-176-123-133.sslip.io**
+A entrega é por **IP público**, portanto a validação principal segue o **caminho IP**
+da atividade (SSL.org + DigiCert). Como reforço, incluímos também o **caminho Domínio**
+(Qualys SSL Labs) via hostname.
 
-- **Overall Rating: A+**
-- **This server supports PQC (Post-Quantum Cryptography) key exchange** —
-  grupo `X25519MLKEM768`
-- TLS 1.3 / TLS 1.2 apenas · HSTS ativo
+#### ✅ Caminho IP (validação principal — `163.176.123.133`)
+
+**1. SSL.org — SSL Certificate Checker** · https://www.ssl.org/
+- **Certificate Trusted: YES**
+- **Algorithm / Key Type & Size: Good signature · Good key** (ECDSA P-256 / SHA-384)
+- Emissor: **Let's Encrypt** · TLS 1.2 e 1.3
+
+![SSL.org — Certificate Trusted YES no IP](docs/ssl-org-ip.png)
+
+**2. DigiCert — TLS Quantum Readiness Check (PQC)** · https://www.digicert.com/pqc-checker
+- **PASS** — *TLS 1.3 enabled*
+- **PASS** — *Quantum-safe key exchange* (ML-KEM / `X25519MLKEM768`)
+
+![DigiCert PQC — PASS no IP](docs/digicert-pqc-ip.png)
+
+#### ➕ Caminho Domínio (reforço — Qualys SSL Labs)
+
+Relatório ao vivo: **https://www.ssllabs.com/ssltest/analyze.html?d=163-176-123-133.sslip.io**
+- **Overall Rating: A+** · suporte a PQC (`X25519MLKEM768`) · HSTS ativo
 
 ![SSL Labs A+ com suporte a PQC](docs/ssllabs-aplus.png)
 
-> O teste gratuito do SSL Labs não avalia endereços IP diretamente; por isso a
-> avaliação é feita pelo hostname `163-176-123-133.sslip.io`, que resolve para o
-> mesmo IP público (`163.176.123.133`) e usa a mesma configuração TLS. Nenhum
-> domínio foi registrado.
+> O teste do SSL Labs não avalia endereços IP diretamente; por isso o caminho Domínio
+> usa o hostname `163-176-123-133.sslip.io`, que resolve para o mesmo IP
+> (`163.176.123.133`) e usa a mesma configuração TLS. Nenhum domínio foi registrado.
 
 ---
 
