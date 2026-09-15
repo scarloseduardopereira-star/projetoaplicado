@@ -15,11 +15,6 @@ Protótipo de aplicação web desenvolvido sob os princípios **Secure by Design
 > assistente de IA (fluxo equivalente ao proposto pela IDE Antigravity),
 > incluindo geração de código seguro, depuração e refatoração.
 
-### 🎥 Vídeo de apresentação
-
-📺 **[Assista à apresentação no YouTube](COLE_AQUI_O_LINK_DO_YOUTUBE)** — explicação do
-objetivo, funcionamento e protocolos de segurança aplicados.
-
 ### 🔗 Aplicação no ar
 
 | Recurso | Endereço |
