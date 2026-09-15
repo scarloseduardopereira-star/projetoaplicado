@@ -6,22 +6,80 @@
   <title>Área Interna</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-  <main class="card">
-    <h1>Área Interna</h1>
+<body class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">🛡️</span>
+      <span class="brand-name">Painel Seguro</span>
+    </div>
+    <div class="topbar-right">
+      <span class="user-chip"><span class="user-dot" aria-hidden="true"></span>{{ user }}</span>
+      <form method="post" action="{{ url_for('logout') }}" class="logout-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+  </header>
 
+  <main class="app-main">
     {% with msgs = get_flashed_messages() %}
       {% if msgs %}<p class="msg">{{ msgs[0] }}</p>{% endif %}
     {% endwith %}
 
-    <p>Autenticado como <strong>{{ user }}</strong>.</p>
-    <p>Esta página só é acessível após login. Requisições não autenticadas
-       são redirecionadas para a tela de entrada.</p>
+    <section class="welcome">
+      <h1>Bem-vindo, {{ user }}</h1>
+      <p class="lead">Esta é a área interna, acessível apenas após autenticação.
+         Requisições não autenticadas são redirecionadas para a tela de entrada.
+         Abaixo, o estado de segurança da sua sessão.</p>
+    </section>
 
-    <form method="post" action="{{ url_for('logout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button type="submit">Sair</button>
-    </form>
+    <section class="panel" aria-label="Status de segurança da sessão">
+      <div class="panel-head">
+        <h2>Segurança da sessão</h2>
+        <span class="pill pill-ok">Todas as proteções ativas</span>
+      </div>
+      <ul class="status-list">
+        <li class="status-row">
+          <span class="status-label">Conexão</span>
+          <span class="status-value">TLS 1.3 + PQC · <code>X25519MLKEM768</code></span>
+          <span class="status-dot" aria-label="ativo"></span>
+        </li>
+        <li class="status-row">
+          <span class="status-label">Certificado</span>
+          <span class="status-value">Let's Encrypt · HTTP redirecionado para HTTPS</span>
+          <span class="status-dot" aria-label="ativo"></span>
+        </li>
+        <li class="status-row">
+          <span class="status-label">Sessão</span>
+          <span class="status-value">Cookie <code>HttpOnly</code> · <code>Secure</code> · <code>SameSite=Lax</code></span>
+          <span class="status-dot" aria-label="ativo"></span>
+        </li>
+        <li class="status-row">
+          <span class="status-label">Autenticação</span>
+          <span class="status-value">Senha protegida por hash <code>Argon2</code></span>
+          <span class="status-dot" aria-label="ativo"></span>
+        </li>
+        <li class="status-row">
+          <span class="status-label">Anti força-bruta</span>
+          <span class="status-value">Limite de 5 tentativas de login por minuto</span>
+          <span class="status-dot" aria-label="ativo"></span>
+        </li>
+        <li class="status-row">
+          <span class="status-label">Proteção CSRF</span>
+          <span class="status-value">Token exigido em toda requisição de escrita</span>
+          <span class="status-dot" aria-label="ativo"></span>
+        </li>
+        <li class="status-row">
+          <span class="status-label">Controle de acesso</span>
+          <span class="status-value">Rota protegida — login obrigatório</span>
+          <span class="status-dot" aria-label="ativo"></span>
+        </li>
+      </ul>
+    </section>
   </main>
+
+  <footer class="app-foot">
+    Sessão encerra automaticamente após 30 min de inatividade.
+  </footer>
 </body>
 </html>
