@@ -27,4 +27,10 @@ __pycache__/
 Thumbs.db
 .idea/
 .vscode/
+.claude/
 *.log
+
+# Materiais de apoio (não fazem parte da entrega avaliada)
+apresentacao.html
+apresentacao.pdf
+roteiro-video.md
