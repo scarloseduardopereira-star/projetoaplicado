@@ -23,6 +23,23 @@ Protótipo de aplicação web desenvolvido sob os princípios **Secure by Design
 | Aplicação (hostname p/ teste TLS) | https://163-176-123-133.sslip.io |
 | Repositório | https://github.com/scarloseduardopereira-star/projetoaplicado |
 
+### 🏆 Evidência — Qualys SSL Labs: **A+** com PQC
+
+Relatório ao vivo (verificável pelo avaliador):
+**https://www.ssllabs.com/ssltest/analyze.html?d=163-176-123-133.sslip.io**
+
+- **Overall Rating: A+**
+- **This server supports PQC (Post-Quantum Cryptography) key exchange** —
+  grupo `X25519MLKEM768`
+- TLS 1.3 / TLS 1.2 apenas · HSTS ativo
+
+![SSL Labs A+ com suporte a PQC](docs/ssllabs-aplus.png)
+
+> O teste gratuito do SSL Labs não avalia endereços IP diretamente; por isso a
+> avaliação é feita pelo hostname `163-176-123-133.sslip.io`, que resolve para o
+> mesmo IP público (`163.176.123.133`) e usa a mesma configuração TLS. Nenhum
+> domínio foi registrado.
+
 ---
 
 ## 0. Sobre o projeto (conceito)
