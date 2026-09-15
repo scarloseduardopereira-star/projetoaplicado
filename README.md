@@ -10,6 +10,11 @@ Protótipo de aplicação web desenvolvido sob os princípios **Secure by Design
 
 > Este README é o relatório técnico da entrega.
 
+> **Codificação assistida por IA:** todo o código, a auditoria de segurança e a
+> configuração de infraestrutura foram desenvolvidos com o auxílio de um
+> assistente de IA (fluxo equivalente ao proposto pela IDE Antigravity),
+> incluindo geração de código seguro, depuração e refatoração.
+
 ---
 
 ## 1. Visão geral da aplicação
