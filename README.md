@@ -10,10 +10,12 @@ Protótipo de aplicação web desenvolvido sob os princípios **Secure by Design
 
 > Este README é o relatório técnico da entrega.
 
-> **Codificação assistida por IA:** todo o código, a auditoria de segurança e a
-> configuração de infraestrutura foram desenvolvidos com o auxílio de um
-> assistente de IA (fluxo equivalente ao proposto pela IDE Antigravity),
-> incluindo geração de código seguro, depuração e refatoração.
+> **Codificação assistida por IA:** o desenvolvimento — escrita e auditoria do
+> código, além da configuração da infraestrutura — foi feito com o auxílio do
+> assistente de IA **Claude (Anthropic)**, utilizado como ambiente equivalente ao
+> indicado pela atividade (IDE Google Antigravity). A IA apoiou a geração de
+> código seguro, a revisão das mitigações OWASP, o endurecimento do servidor e a
+> depuração.
 
 ### 🔗 Aplicação no ar
 
