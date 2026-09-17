@@ -275,7 +275,7 @@ body.app {
 }
 
 /* ============================================================
-   Tela de login — identidade "Painel Seguro"
+   Tela de login — identidade "Sentinela"
    ============================================================ */
 .login-card { position: relative; padding-top: 2.2rem; }
 .login-card::before {

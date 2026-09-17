@@ -1,14 +1,19 @@
-# Projeto Aplicado: Práticas de Mercado — Protótipo Web Seguro
+# 🛡️ Sentinela — Portal de Acesso Seguro
 
-Protótipo de aplicação web desenvolvido sob os princípios **Secure by Design** e
-**Secure by Default**, integrando os três eixos da disciplina:
+O **Sentinela** é uma aplicação web enxuta de autenticação (entrar → área restrita →
+sair) usada como vitrine prática do ciclo de vida seguro de um software: da escrita do
+código até a operação em produção na nuvem. É a entrega da disciplina **Projeto
+Aplicado: Práticas de Mercado**, com segurança aplicada em cada camada — e não como
+acabamento no fim.
 
-- ☁️ **Eixo 1 — Infraestrutura:** VM Ubuntu na Oracle Cloud (Free Tier), Nginx, HTTPS.
-- 📦 **Eixo 2 — Repositório:** GitHub público, `.gitignore` blindado, sem credenciais versionadas.
-- 💻 **Eixo 3 — Desenvolvimento:** app Flask (Python) com login, área interna e logout.
-- 🔄 **CI/CD:** GitHub Actions faz o deploy automático a cada `git push origin main`.
+O trabalho se organiza em quatro frentes:
 
-> Este README é o relatório técnico da entrega.
+- ☁️ **Infraestrutura** — VM Ubuntu na Oracle Cloud (Free Tier) atrás do Nginx, com HTTPS e servidor endurecido.
+- 📦 **Repositório** — código público no GitHub, sem nenhum segredo versionado.
+- 💻 **Aplicação** — protótipo em Flask (Python): tela de entrada, painel interno e saída.
+- 🔄 **Automação** — cada `git push origin main` testa e publica sozinho via GitHub Actions.
+
+> Este README também serve como o relatório técnico da entrega.
 
 > **Codificação assistida por IA:** o desenvolvimento — escrita e auditoria do
 > código, além da configuração da infraestrutura — foi feito com o auxílio do
@@ -67,17 +72,19 @@ Relatório ao vivo: **https://www.ssllabs.com/ssltest/analyze.html?d=163-176-123
 
 ### Do que se trata
 
-Este projeto simula o **ciclo de vida completo** de uma aplicação web moderna em um
-cenário de mercado real: escrever o código, versioná-lo, publicá-lo em nuvem pública
-e mantê-lo em produção — **com segurança em cada etapa**, e não como um remendo no fim.
+O Sentinela é propositalmente pequeno: o foco não é a funcionalidade, e sim mostrar
+**como** um software nasce, vai para o ar e se mantém em operação sem abrir mão de
+segurança. Ele percorre o caminho inteiro — código, versionamento, publicação em nuvem
+pública e operação contínua — tratando proteção como parte do projeto, e não como
+correção posterior.
 
-A ideia central é demonstrar dois princípios:
+Duas ideias guiam cada decisão:
 
-- **Secure by Design** — a segurança faz parte da arquitetura desde o primeiro
-  commit (controle de acesso, hash de senha, proteção CSRF, cabeçalhos de segurança).
-- **Secure by Default** — a configuração padrão já é a mais segura possível: o app
-  se recusa a iniciar sem segredos definidos, o cookie de sessão já nasce protegido,
-  o servidor só aceita TLS moderno e só abre as portas estritamente necessárias.
+- **Secure by Design** — os controles (bloqueio de acesso, senha em hash, defesa contra
+  CSRF, cabeçalhos de proteção) já vêm embutidos na arquitetura.
+- **Secure by Default** — o comportamento padrão é o mais seguro: a aplicação nem sobe
+  sem seus segredos, o cookie de sessão já nasce blindado, e o servidor só aceita TLS
+  moderno e expõe o mínimo de portas.
 
 ### Como funciona (em uma frase)
 
