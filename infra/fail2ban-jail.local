@@ -1,0 +1,14 @@
+# Fail2Ban — protege a porta 22 (SSH) contra força bruta.
+# Instalar em: /etc/fail2ban/jail.local  (depois: systemctl restart fail2ban)
+#
+# Meta da atividade: tolerância de 4 erros e banimento de 24 horas.
+
+[DEFAULT]
+bantime  = 86400   ; 24 horas
+findtime = 600      ; janela de 10 min
+maxretry = 4        ; 4 tentativas antes do ban
+
+[sshd]
+enabled = true
+port    = 22
+backend = systemd

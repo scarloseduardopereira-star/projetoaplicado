@@ -3,12 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login</title>
+  <title>Entrar · Painel Seguro</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <main class="card">
-    <h1>Entrar</h1>
+  <main class="card login-card">
+    <div class="brand brand-center">
+      <span class="brand-mark" aria-hidden="true">🛡️</span>
+      <span class="brand-name">Painel Seguro</span>
+    </div>
+    <h1 class="login-title">Acesso restrito</h1>
+    <p class="login-sub">Entre com suas credenciais para continuar.</p>
 
     {% with msgs = get_flashed_messages() %}
       {% if msgs %}<p class="msg err">{{ msgs[0] }}</p>{% endif %}
@@ -27,6 +32,11 @@
       </label>
       <button type="submit">Entrar</button>
     </form>
+
+    <p class="login-foot">
+      <span aria-hidden="true">🔒</span>
+      Conexão protegida por HTTPS + criptografia pós-quântica
+    </p>
   </main>
 </body>
 </html>

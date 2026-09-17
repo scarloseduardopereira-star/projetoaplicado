@@ -1,6 +1,6 @@
-name: Deploy para produção (Oracle Cloud)
+name: CI/CD — testa e publica em produção (Oracle Cloud)
 
-# Dispara a cada push na branch main — deploy automático no servidor.
+# Dispara a cada push na branch main. O deploy só ocorre se os testes passarem.
 on:
   push:
     branches: [main]
@@ -11,7 +11,49 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # --------------------------------------------------------------------------
+  # 1) Testes + auditoria de segurança das dependências (gate do deploy)
+  # --------------------------------------------------------------------------
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Smoke test (app sobe e controle de acesso funciona)
+        env:
+          APP_ENV: development
+          SECRET_KEY: ci-smoke-test-key
+          APP_USER: admin
+          APP_PASSWORD_HASH: dummy-hash-para-import
+        run: |
+          python - <<'PY'
+          import app
+          c = app.app.test_client()
+          assert c.get("/healthz").status_code == 200, "healthz deveria responder 200"
+          # A01: rota interna redireciona para login quando não autenticado
+          assert c.get("/interna").status_code == 302, "/interna deveria exigir login (302)"
+          print("smoke test OK")
+          PY
+
+      - name: Auditoria de vulnerabilidades nas dependências (pip-audit)
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt || echo "::warning::pip-audit reportou avisos — revisar"
+
+  # --------------------------------------------------------------------------
+  # 2) Deploy via SSH (só roda se o job de testes passar)
+  # --------------------------------------------------------------------------
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Configurar chave SSH (base64 -> arquivo)

@@ -273,3 +273,37 @@ body.app {
 @media (prefers-reduced-motion: reduce) {
   .panel, .status-row { animation: none; }
 }
+
+/* ============================================================
+   Tela de login — identidade "Painel Seguro"
+   ============================================================ */
+.login-card { position: relative; padding-top: 2.2rem; }
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(90deg, var(--accent), var(--ok));
+}
+.brand-center { justify-content: center; margin-bottom: 1.1rem; }
+.login-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+.login-sub {
+  margin: 0 0 1.4rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.login-foot {
+  margin: 1.3rem 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #64748b;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
