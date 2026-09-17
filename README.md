@@ -62,6 +62,41 @@ Relatório ao vivo: **https://www.ssllabs.com/ssltest/analyze.html?d=163-176-123
 > [`docs/evidencias/`](docs/evidencias/) — servidor, SSH, Fail2Ban, firewall,
 > Certbot, PQC, SSL.org, DigiCert, SSL Labs e a execução do GitHub Actions.
 
+<details>
+<summary><b>📸 Evidências de infraestrutura e CI/CD (clique para expandir)</b></summary>
+
+<br>
+
+**Servidor — Ubuntu 26.04 LTS, Nginx e serviços ativos**
+
+![Servidor](docs/evidencias/01-servidor.png)
+
+**SSH — acesso só por chave, senha desabilitada**
+
+![SSH](docs/evidencias/02-ssh.png)
+
+**Fail2Ban — 4 tentativas / banimento de 24h (com IPs banidos)**
+
+![Fail2Ban](docs/evidencias/03-fail2ban.png)
+
+**Firewall — apenas portas 22, 80 e 443 (resto REJECT)**
+
+![Firewall](docs/evidencias/04-firewall.png)
+
+**Certbot 5.8 — certificados Let's Encrypt (IP e hostname)**
+
+![Certbot](docs/evidencias/05-certbot.png)
+
+**TLS 1.3 + PQC (X25519MLKEM768) + redirect HTTP→HTTPS**
+
+![TLS e PQC](docs/evidencias/06-tls-pqc.png)
+
+**CI/CD — GitHub Actions: run Success (test + deploy)**
+
+![GitHub Actions](docs/evidencias/10-github-actions.png)
+
+</details>
+
 > O teste do SSL Labs não avalia endereços IP diretamente; por isso o caminho Domínio
 > usa o hostname `163-176-123-133.sslip.io`, que resolve para o mesmo IP
 > (`163.176.123.133`) e usa a mesma configuração TLS. Nenhum domínio foi registrado.
