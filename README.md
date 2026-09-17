@@ -38,20 +38,24 @@ da atividade (SSL.org + DigiCert). Como reforço, incluímos também o **caminho
 - **Algorithm / Key Type & Size: Good signature · Good key** (ECDSA P-256 / SHA-384)
 - Emissor: **Let's Encrypt** · TLS 1.2 e 1.3
 
-![SSL.org — Certificate Trusted YES no IP](docs/ssl-org-ip.png)
+![SSL.org — Certificate Trusted YES no IP](docs/evidencias/07-ssl-org.png)
 
 **2. DigiCert — TLS Quantum Readiness Check (PQC)** · https://www.digicert.com/pqc-checker
 - **PASS** — *TLS 1.3 enabled*
 - **PASS** — *Quantum-safe key exchange* (ML-KEM / `X25519MLKEM768`)
 
-![DigiCert PQC — PASS no IP](docs/digicert-pqc-ip.png)
+![DigiCert PQC — PASS no IP](docs/evidencias/08-digicert-pqc.png)
 
 #### ➕ Caminho Domínio (reforço — Qualys SSL Labs)
 
 Relatório ao vivo: **https://www.ssllabs.com/ssltest/analyze.html?d=163-176-123-133.sslip.io**
 - **Overall Rating: A+** · suporte a PQC (`X25519MLKEM768`) · HSTS ativo
 
-![SSL Labs A+ com suporte a PQC](docs/ssllabs-aplus.png)
+![SSL Labs A+ com suporte a PQC](docs/evidencias/09-ssllabs.png)
+
+> 📁 Todas as evidências (infra + testes TLS + CI/CD) estão em
+> [`docs/evidencias/`](docs/evidencias/) — servidor, SSH, Fail2Ban, firewall,
+> Certbot, PQC, SSL.org, DigiCert, SSL Labs e a execução do GitHub Actions.
 
 > O teste do SSL Labs não avalia endereços IP diretamente; por isso o caminho Domínio
 > usa o hostname `163-176-123-133.sslip.io`, que resolve para o mesmo IP
