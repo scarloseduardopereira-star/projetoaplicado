@@ -181,7 +181,7 @@ def interna():
   `SameSite=Lax`, e `Secure` em produção (só trafega sob HTTPS). Sessão expira
   em 30 minutos.
 
-### ✅ A05 — Security Misconfiguration
+### ✅ A02 — Security Misconfiguration
 
 **Onde:** `app.py`, bloco de configuração do `Talisman` e `app.config`.
 

@@ -6,7 +6,7 @@ definido por variáveis de ambiente. Mitiga 3 categorias da OWASP Top 10:2025:
 
   A01 - Broken Access Control ......... @login_required protege /interna
   A07 - Authentication Failures ....... hash Argon2 + rate limit + cookie seguro
-  A05 - Security Misconfiguration ..... Talisman (headers, HSTS, força HTTPS)
+  A02 - Security Misconfiguration ..... Talisman (headers, HSTS, força HTTPS)
 
 Nenhum segredo é hardcoded: SECRET_KEY e APP_PASSWORD_HASH vêm do ambiente,
 e o app se recusa a iniciar sem eles.
@@ -72,7 +72,7 @@ if IS_PROD:
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 # ---------------------------------------------------------------------------
-# A05 - Security Misconfiguration: headers de segurança, HSTS, CSP, força HTTPS
+# A02 - Security Misconfiguration: headers de segurança, HSTS, CSP, força HTTPS
 # ---------------------------------------------------------------------------
 Talisman(
     app,
